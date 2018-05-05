@@ -10,11 +10,10 @@
    - name: import repository key
      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=BC19DDBA
 
-   - name: add apt repository for mysql-wsrep-5.6
-     apt_repository: repo="deb http://releases.galeracluster.com/mysql-wsrep-5.6/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
+   - name: add apt repository for mysql-wsrep-5.6 and Galera Cluster
+     apt_repository: repo='{{item}}'
        state=present update_cache=yes
-
-   - name: add apt repository for Galera Cluster 
-     apt_repository: repo="deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
-       state=present update_cache=yes
+     with_items:
+        - "deb http://releases.galeracluster.com/mysql-wsrep-5.6/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
+        - "deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
 
