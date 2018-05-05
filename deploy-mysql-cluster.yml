@@ -17,3 +17,5 @@
         - "deb http://releases.galeracluster.com/mysql-wsrep-5.6/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
         - "deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
 
+   - name: create a preference file for galera repository. 
+     shell: 'echo "Package: *\nPin: origin releases.galeracluster.com\nPin-Priority: 1001" > /etc/apt/preferences.d/mysql-galera-cluster.pref'
