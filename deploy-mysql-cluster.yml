@@ -67,11 +67,10 @@
    
 
    - name: Bootstarping Primary Mysql Node
-     command: /usr/bin/mysqld_bootstrap
-     when: inventory_hostname == mysql_cluster[0]
-     run_once: true
+     shell: /usr/bin/mysqld_bootstrap
+     when: inventory_hostname == groups['mysql_cluster'][0]
 
    - name: Start slave Mysql nodes
-     systemd: state=stopped name=mysql
-     when: inventory_hostname != 'mysql_cluster[0]'
+     systemd: state=started name=mysql
+     when: inventory_hostname != groups['mysql_cluster'][0]
      
