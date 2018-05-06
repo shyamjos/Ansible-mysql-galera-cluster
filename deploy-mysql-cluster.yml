@@ -4,6 +4,7 @@
   become_method: sudo
   vars:
     mysql_cluster_name: demo_mysql_cluster
+    mysql_root_password: your_mysql_root_password
 
   tasks:
 
@@ -62,10 +63,18 @@
        group: mysql
      when: "'mysql_cluster' in group_names"
 
-   - name: Stop Mysql
+   - name: Stop Primary Mysql Node
      systemd: state=stopped name=mysql
-     when: "'mysql_cluster' in group_names"
-   
+     when: inventory_hostname == groups['mysql_cluster'][0]
+     tags:
+        - stop_cluster
+
+   - name: Stop slave mysql nodes
+     systemd: state=stopped name=mysql
+     when: inventory_hostname != groups['mysql_cluster'][0] and inventory_hostname != groups['load_balancer']
+     tags:
+        - stop_cluster
+
 
    - name: Bootstarping Primary Mysql Node
      shell: /usr/bin/mysqld_bootstrap
@@ -75,7 +84,7 @@
 
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
-     when: inventory_hostname != groups['mysql_cluster'][0]
+     when: inventory_hostname != groups['mysql_cluster'][0] and inventory_hostname != groups['load_balancer']
      tags:
         - start_cluster 
      
@@ -97,12 +106,24 @@
      when: "'load_balancer' in group_names"
      tags:
         - install_haproxy
+   - name: Set mysql root user password
+     mysql_user: 
+      name: root
+      host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
+      check_implicit_admin: yes
+      password: "{{ mysql_root_password }}"
+      state: present
+     when: inventory_hostname == groups['mysql_cluster'][0]
+     tags:
+        - install_haproxy
 
    - name: Create haproxy mysql user to perform basic health checks 
      mysql_user:
       name: haproxy
       host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
       state: present
+      login_user: root
+      login_password: '{{ mysql_root_password }}'
      when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
         - install_haproxy
