@@ -11,7 +11,7 @@
 
    - name: import repository key
      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=BC19DDBA
-     when: "'mysql-cluster' in group_names"    
+     when: "'mysql_cluster' in group_names"    
  
    - name: add apt repository for mysql-wsrep-5.7 and Galera Cluster
      apt_repository: repo='{{item}}'
@@ -19,7 +19,7 @@
      with_items:
         - "deb http://releases.galeracluster.com/mysql-wsrep-5.7/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
         - "deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
-     when: "'mysql-cluster' in group_names"
+     when: "'mysql_cluster' in group_names"
 
    - name: create a preference file for galera repository. 
      blockinfile: |
@@ -28,7 +28,7 @@
        content="Package: *
                 Pin: origin releases.galeracluster.com
                 Pin-Priority: 1001"
-     when: "'mysql-cluster' in group_names"
+     when: "'mysql_cluster' in group_names"
 
 # Install Mysql and Galera Cluster packages
 
@@ -38,7 +38,7 @@
       dest: /etc/apparmor.d/disable/.sbin.mysqld
       state: link
       force: yes
-     when: "'mysql-cluster' in group_names"
+     when: "'mysql_cluster' in group_names"
 
    - name: install Mysql-server 5.7 and Galera Cluster packages
      apt:
@@ -49,7 +49,7 @@
        - galera-arbitrator-3
        - mysql-wsrep-5.7 
        - rsync 
-     when: "'mysql-cluster' in group_names"
+     when: "'mysql_cluster' in group_names"
 
 # Create Mysql Galera Cluster Configuration file
 
@@ -59,8 +59,19 @@
        dest: /etc/mysql/conf.d/mysql_galera_cluster.cnf
        owner: mysql
        group: mysql
-     when: "'mysql-cluster' in group_names"
+     when: "'mysql_cluster' in group_names"
 
-#- name: Stop Mysql service 
-#  systemd: state=stopped name=mysql
-#  when: "'mysql-cluster' in group_names"
+   - name: Stop Mysql
+     systemd: state=stopped name=mysql
+     when: "'mysql_cluster' in group_names"
+   
+
+   - name: Bootstarping Primary Mysql Node
+     command: /usr/bin/mysqld_bootstrap
+     when: inventory_hostname == mysql_cluster[0]
+     run_once: true
+
+   - name: Start slave Mysql nodes
+     systemd: state=stopped name=mysql
+     when: inventory_hostname != 'mysql_cluster[0]'
+     
