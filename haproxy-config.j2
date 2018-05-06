@@ -1,0 +1,9 @@
+# Load Balancing for Mysql Galera Cluster
+listen galera 192.168.1.10:3306
+     balance source
+     mode tcp
+     option tcpka
+     option mysql-check user haproxy
+     server node1 192.168.1.1:3306 check weight 1
+     server node2 192.168.1.2:3306 check weight 1
+     server node2 192.168.1.3:3306 check weight 1
