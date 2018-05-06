@@ -49,6 +49,7 @@
        - galera-arbitrator-3
        - mysql-wsrep-5.7 
        - rsync 
+       - python-mysqldb
      when: "'mysql_cluster' in group_names"
 
 # Create Mysql Galera Cluster Configuration file
@@ -69,15 +70,22 @@
    - name: Bootstarping Primary Mysql Node
      shell: /usr/bin/mysqld_bootstrap
      when: inventory_hostname == groups['mysql_cluster'][0]
+     tags:
+        - start_cluster
 
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
      when: inventory_hostname != groups['mysql_cluster'][0]
+     tags:
+        - start_cluster 
      
    - name: install haproxy
      apt:
-      name: haproxy
+      name: '{{item}}'
       update_cache: yes
+     with_items:
+         - haproxy
+         - python-mysqldb
      when: "'load_balancer' in group_names"
      tags:
         - install_haproxy
@@ -87,6 +95,14 @@
        src: haproxy-config.j2
        dest: /etc/haproxy/haproxy.cfg
      when: "'load_balancer' in group_names"
+     tags:
+        - install_haproxy
+
+   - name: Create haproxy mysql user to perform basic health checks 
+     mysql_user:
+      name: haproxy
+      host: '{{ ansible_default_ipv4.address }}'
+      state: present
      tags:
         - install_haproxy
 
