@@ -103,6 +103,7 @@
       name: haproxy
       host: '{{ ansible_default_ipv4.address }}'
       state: present
+     when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
         - install_haproxy
 
