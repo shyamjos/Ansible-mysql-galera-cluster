@@ -36,7 +36,8 @@ defaults
 
 
 # Load Balancing for Mysql Galera Cluster
-listen mysql_galera_cluster {{ ansible_default_ipv4.address }}:3306
+listen mysql_galera_cluster 
+bind {{ ansible_default_ipv4.address }}:3306
      balance source
      mode tcp
      option tcpka
