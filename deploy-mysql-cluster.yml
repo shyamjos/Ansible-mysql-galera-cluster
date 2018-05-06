@@ -74,3 +74,11 @@
      systemd: state=started name=mysql
      when: inventory_hostname != groups['mysql_cluster'][0]
      
+   - name: install haproxy
+     apt:
+      name: haproxy
+      update_cache: yes
+     when: "'load_balancer' in group_names"
+     tags:
+        - install_haproxy
+     
