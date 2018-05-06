@@ -2,32 +2,58 @@
 - hosts: all
   become: true
   become_method: sudo
+  vars:
+    mysql_cluster_name: demo_mysql_cluster
 
   tasks:
 
-# Setup Mysql server 5.6 galera cluster repositories
+# Setup Mysql server 5.7 galera cluster repositories
 
    - name: import repository key
      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=BC19DDBA
 
-   - name: add apt repository for mysql-wsrep-5.6 and Galera Cluster
+   - name: add apt repository for mysql-wsrep-5.7 and Galera Cluster
      apt_repository: repo='{{item}}'
        state=present update_cache=yes
      with_items:
-        - "deb http://releases.galeracluster.com/mysql-wsrep-5.6/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
+        - "deb http://releases.galeracluster.com/mysql-wsrep-5.7/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
         - "deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
 
    - name: create a preference file for galera repository. 
-     shell: 'echo "Package: *\nPin: origin releases.galeracluster.com\nPin-Priority: 1001" > /etc/apt/preferences.d/mysql-galera-cluster.pref'
+     blockinfile: |
+       create=yes
+       dest=/etc/apt/preferences.d/mysql-galera-cluster.pref
+       content="Package: *
+                Pin: origin releases.galeracluster.com
+                Pin-Priority: 1001"
 
 # Install Mysql and Galera Cluster packages
+
+   - name: disable mysql AppArmor rule to run external programs and open listen sockets on unprivileged ports
+     file:
+      src: /etc/apparmor.d/usr
+      dest: /etc/apparmor.d/disable/.sbin.mysqld
+      state: link
+      force: yes
    
-   - name: Update repositories cache and install Mysql and Galera Cluster packages
+   - name: install Mysql-server 5.7 and Galera Cluster packages
      apt:
       name: '{{item}}'
       update_cache: yes 
      with_items:
        - galera-3
        - galera-arbitrator-3
-       - mysql-wsrep-5.6 
+       - mysql-wsrep-5.7 
        - rsync 
+
+# Create Mysql Galera Cluster Configuration file
+
+   - name: Create Mysql Galera Cluster Configuration file     
+     template:
+       src: mysql-cluster-config.j2
+       dest: /etc/mysql/conf.d/mysql_galera_cluster.cnf
+       owner: mysql
+       group: mysql
+
+#- name: Make sure a service is running
+#  systemd: state=stopped name=mysql
