@@ -11,13 +11,15 @@
 
    - name: import repository key
      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=BC19DDBA
-
+     when: "'mysql-cluster' in group_names"    
+ 
    - name: add apt repository for mysql-wsrep-5.7 and Galera Cluster
      apt_repository: repo='{{item}}'
        state=present update_cache=yes
      with_items:
         - "deb http://releases.galeracluster.com/mysql-wsrep-5.7/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
         - "deb http://releases.galeracluster.com/galera-3/{{ ansible_distribution|lower() }} {{ ansible_distribution_release }} main"
+     when: "'mysql-cluster' in group_names"
 
    - name: create a preference file for galera repository. 
      blockinfile: |
@@ -26,16 +28,18 @@
        content="Package: *
                 Pin: origin releases.galeracluster.com
                 Pin-Priority: 1001"
+     when: "'mysql-cluster' in group_names"
 
 # Install Mysql and Galera Cluster packages
 
-   - name: disable mysql AppArmor rule to run external programs and open listen sockets on unprivileged ports
+   - name: Disable mysql AppArmor rule to run  external programs and open listen sockets on unprivileged ports
      file:
       src: /etc/apparmor.d/usr
       dest: /etc/apparmor.d/disable/.sbin.mysqld
       state: link
       force: yes
-   
+     when: "'mysql-cluster' in group_names"
+
    - name: install Mysql-server 5.7 and Galera Cluster packages
      apt:
       name: '{{item}}'
@@ -45,6 +49,7 @@
        - galera-arbitrator-3
        - mysql-wsrep-5.7 
        - rsync 
+     when: "'mysql-cluster' in group_names"
 
 # Create Mysql Galera Cluster Configuration file
 
@@ -54,6 +59,8 @@
        dest: /etc/mysql/conf.d/mysql_galera_cluster.cnf
        owner: mysql
        group: mysql
+     when: "'mysql-cluster' in group_names"
 
-#- name: Make sure a service is running
+#- name: Stop Mysql service 
 #  systemd: state=stopped name=mysql
+#  when: "'mysql-cluster' in group_names"
