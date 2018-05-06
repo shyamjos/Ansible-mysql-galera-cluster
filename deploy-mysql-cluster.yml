@@ -101,9 +101,16 @@
    - name: Create haproxy mysql user to perform basic health checks 
      mysql_user:
       name: haproxy
-      host: '{{ ansible_default_ipv4.address }}'
+      host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
       state: present
      when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
         - install_haproxy
 
+   - name: Restart haproxy
+     systemd: state=restarted name=haproxy
+     when: "'load_balancer' in group_names"
+     tags:
+        - install_haproxy
+
+   
