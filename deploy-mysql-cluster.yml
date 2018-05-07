@@ -74,7 +74,7 @@
 
    - name: Stop slave mysql nodes
      systemd: state=stopped name=mysql
-     when: inventory_hostname != groups['mysql_cluster'][0] and inventory_hostname != groups['load_balancer']
+     when: inventory_hostname != groups['mysql_cluster'][0] and "'load_balancer' not in group_names" 
      tags:
         - stop_cluster
 
@@ -94,7 +94,7 @@
 
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
-     when: inventory_hostname != groups['mysql_cluster'][0] and inventory_hostname != groups['load_balancer']
+     when: inventory_hostname != groups['mysql_cluster'][0] and "'load_balancer' not in group_names" 
      tags:
         - start_cluster 
      
@@ -121,7 +121,7 @@
       name: root
       host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
       check_implicit_admin: yes
-      password: "{{ mysql_root_password }}"
+      password: '{{ mysql_root_password }}'
       state: present
      when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
