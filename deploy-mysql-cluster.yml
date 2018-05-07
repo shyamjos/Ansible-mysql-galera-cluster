@@ -72,15 +72,16 @@
        group: mysql
      when: "'mysql_cluster' in group_names"
 
-   - name: Stop Primary Mysql Node
-     systemd: state=stopped name=mysql
-     when: inventory_hostname == groups['mysql_cluster'][0]
-     tags:
-        - stop_cluster
-
    - name: Stop slave mysql nodes
      systemd: state=stopped name=mysql
      when: inventory_hostname != groups['mysql_cluster'][0] and inventory_hostname != groups['load_balancer']
+     tags:
+        - stop_cluster
+
+
+   - name: Stop Primary Mysql Node
+     systemd: state=stopped name=mysql
+     when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
         - stop_cluster
 
