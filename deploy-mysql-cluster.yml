@@ -77,12 +77,19 @@
      tags:
         - stop_cluster
 
+   - name: Wait 25 seconds to safely shutdown all slave mysql nodes
+     pause:
+      seconds: 25
 
    - name: Stop Primary Mysql Node
      systemd: state=stopped name=mysql
      when: inventory_hostname == groups['mysql_cluster'][0]
      tags:
         - stop_cluster
+
+   - name: Wait 10 seconds to safely shutdown mysql primary node
+     pause:
+      seconds: 25
 
 
    - name: Bootstarping Primary Mysql Node
