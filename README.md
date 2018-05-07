@@ -26,13 +26,13 @@ You can can verfiy the status of mysql cluster by running below query
 
 mysql -u root -p 
 
-mysql> SHOW STATUS LIKE 'wsrep_cluster_size';
+`mysql> SHOW STATUS LIKE 'wsrep_cluster_size';
 +--------------------+-------+
 | Variable_name      | Value |
 +--------------------+-------+
 | wsrep_cluster_size | 3     |
 +--------------------+-------+
-1 row in set (0.00 sec)
+1 row in set (0.00 sec)`
 
 Which means we have 3 active nodes 
  
