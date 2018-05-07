@@ -1,5 +1,5 @@
 ## Ansible playbook for deploying mysql-server 5.7 galera cluster with HAproxy as load balancer
-### features of Mysql Galera Cluster
+### Features of Mysql 5.7 Galera Cluster
 * True Multi-master,  Active-Active Cluster Read and write to any node at any time.
 * Synchronous Replication No slave lag, no data is lost at node crash.
 * Tightly Coupled All nodes hold the same state. No diverged data between nodes allowed.
