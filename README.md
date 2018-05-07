@@ -11,12 +11,13 @@ Note: Do not chnage the group names defined inside `inventory.yml` file
 
 Before running the playbook you have to configure below variables inside the playbook `deploy-mysql-cluster.yml`
 
-mysql_cluster_name: demo_mysql_cluster  <= name of your mysql cluster without spaces 
+`mysql_cluster_name: demo_mysql_cluster`  <= name of your mysql cluster without spaces 
 
-mysql_root_password: your_mysql_root_password <= a strong password for mysql root user
+`mysql_root_password: your_mysql_root_password` <= a strong password for mysql root user
 
+To run the playbook 
 
-ansible-playbook deploy-mysql-cluster.yml -i inventory.yml
+`ansible-playbook deploy-mysql-cluster.yml -i inventory.yml`
 
 After successful completion of playbook, you can access the cluster by `load_balancer_IP:3306`
 
