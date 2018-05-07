@@ -23,7 +23,7 @@ This playbook requires minimum 3 ubuntu 16.04 nodes for installing mysql 5.7 gal
 
 add hosts to `inventory.yml`
 
-Note: Do not modify the host group names [mysql_cluster] and [load_balancer] when adding hosts to `inventory.yml` file. 
+Note: Do not modify the host group names [mysql_cluster] and [load_balancer] when adding hosts to `inventory.yml` file since it has dependencies inside the playbook. 
 
 ```
 [mysql_cluster]
