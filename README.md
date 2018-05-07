@@ -53,5 +53,6 @@ You can use the --tag option "start_cluster" in ansible to safely start/bootstra
 
 ### To-DO List
 
-* Convert this playbook into a ansible role
+* Convert this playbook into an ansible role
 * Add tasks to verify/test cluster status 
+* add tasks to secure nodes
