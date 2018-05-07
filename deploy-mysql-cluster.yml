@@ -53,6 +53,11 @@
        - python-mysqldb
      when: "'mysql_cluster' in group_names"
 
+   - name: Disable mysql systemd unit to prevent cluster from starting in wrong order 
+     systemd: name=mysql masked: yes
+     when: "'mysql_cluster' in group_names"
+
+
 # Create Mysql Galera Cluster Configuration file
 
    - name: Create Mysql Galera Cluster Configuration file     
