@@ -157,3 +157,17 @@
      when: "'load_balancer' in group_names"
 
    
+   - name: Testing cluster status by connecting to load balancer
+     shell: mysql -h {{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }} -u root -p{{ mysql_root_password }} -e "SHOW STATUS LIKE 'wsrep_cluster_size'" | grep 'wsrep_cluster_size' | awk '{print $2}'
+     when: inventory_hostname == groups['load_balancer'][0]
+     run_once: true
+     register: cluster_status
+
+   - name: Test status
+     debug: 
+         msg: 
+            - " Test connection successfull"
+            - " Total number of active mysql nodes in cluster: '{{ cluster_status.stdout }} '"
+            - " Setup Completed!"
+     when: inventory_hostname == groups['load_balancer'][0] 
+     run_once: true
