@@ -9,7 +9,7 @@ Note: Do not chnage the group names defined inside `inventory.yml` file
 
 ### Running Playbook
 
-Before running the playbook you have to configure below variables inside the playbook `deploy-mysql-cluster.yml`
+Before running the playbook you have to configure below variables inside the playbook : `deploy-mysql-cluster.yml`
 
 `mysql_cluster_name: demo_mysql_cluster`  <= name of your mysql cluster without spaces 
 
