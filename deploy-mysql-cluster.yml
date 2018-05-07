@@ -74,7 +74,7 @@
 
    - name: Stop slave mysql nodes
      systemd: state=stopped name=mysql
-     when: inventory_hostname != groups['mysql_cluster'][0] and "'load_balancer' not in group_names" 
+     when: "'load_balancer' not in group_names" and inventory_hostname != groups['mysql_cluster'][0] 
      tags:
         - stop_cluster
 
