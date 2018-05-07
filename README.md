@@ -25,7 +25,7 @@ After successful completion of playbook, you can access the cluster by `load_bal
 
 You can can verfiy the status of mysql cluster by running below query   
 
-mysql -u root -p 
+mysql -u root -p your_password 
 
 `mysql> SHOW STATUS LIKE 'wsrep_cluster_size';
 +--------------------+-------+
