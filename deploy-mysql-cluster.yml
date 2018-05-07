@@ -123,6 +123,7 @@
       login_user: root
       login_password: '{{ mysql_root_password }}'
       password: '{{ mysql_root_password }}'
+      priv: '*.*:ALL'
       state: present
       update_password: always
      when: inventory_hostname == groups['mysql_cluster'][0]
