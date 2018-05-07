@@ -14,7 +14,7 @@
 
 ### Requirements
 
-This playbook requires minimum 3 ubuntu 16.04 nodes for installing mysql 5.7 galera cluster and 1 ubuntu 16.04 node for installing HAproxy. cluster nodes and proxy node must be defined inside the included inventory.yml file.
+This playbook requires minimum of 3 ubuntu 16.04 nodes (you can add more nodes as needed) for installing mysql 5.7 galera cluster and 1 ubuntu 16.04 node for installing HAproxy. cluster nodes and proxy node must be defined inside the included inventory.yml file.
 
 
 ![mysql galera cluster](https://i.imgur.com/YSR0Pnul.png )
