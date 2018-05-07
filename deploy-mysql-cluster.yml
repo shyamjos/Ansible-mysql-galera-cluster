@@ -116,16 +116,15 @@
          - haproxy
          - python-mysqldb
      when: "'load_balancer' in group_names"
-     tags:
-        - install_haproxy
+
      
    - name: add mysql nodes to haproxy Configuration file
      template:
        src: haproxy-config.j2
        dest: /etc/haproxy/haproxy.cfg
      when: "'load_balancer' in group_names"
-     tags:
-        - install_haproxy
+
+
    - name: Set mysql root user password
      mysql_user: 
       name: root
@@ -142,8 +141,6 @@
         - "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
         - 127.0.0.1
         - "localhost"
-     tags:
-        - install_haproxy
 
    - name: Create haproxy mysql user to perform basic health checks 
      mysql_user:
@@ -154,13 +151,9 @@
       login_user: root
       login_password: '{{ mysql_root_password }}'
      when: inventory_hostname == groups['mysql_cluster'][0]
-     tags:
-        - install_haproxy
 
    - name: Restart haproxy
      systemd: state=restarted name=haproxy
      when: "'load_balancer' in group_names"
-     tags:
-        - install_haproxy
 
    
