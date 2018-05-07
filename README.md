@@ -1,4 +1,4 @@
-## An ansible playbook for deploying mysql-server 5.7 galera cluster with HAproxy as load balancer
+## Ansible playbook for deploying mysql-server 5.7 galera cluster with HAproxy as load balancer
 
 ### Requirements
 
