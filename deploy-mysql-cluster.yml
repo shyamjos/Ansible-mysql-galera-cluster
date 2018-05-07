@@ -35,11 +35,13 @@
 
    - name: Disable mysql AppArmor rule to run  external programs and open listen sockets on unprivileged ports
      file:
-      src: /etc/apparmor.d/usr
-      dest: /etc/apparmor.d/disable/.sbin.mysqld
+      src: /etc/apparmor.d/usr.sbin.mysqld
+      dest: /etc/apparmor.d/disable/   
       state: link
       force: yes
      when: "'mysql_cluster' in group_names"
+     tags:
+        - start_clsuter
 
    - name: install Mysql-server 5.7 and Galera Cluster packages
      apt:
