@@ -1,6 +1,6 @@
 ## An ansible playbook for deploying mysql-server 5.7 galera cluster with HAproxy as load balancer
 
-###requirements
+### Requirements
 
 This playbook requires minimum 3 ubuntu 16.04 nodes for mysql cluster and 1 ubuntu 16.04 node for HAproxy. cluster nodes and proxy node must be defined inside the included inventory.yml file.
 Note: Do not chnage the group names defined inside `inventory.yml` file
