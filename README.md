@@ -65,14 +65,14 @@ Which means we have 3 active nodes
 
 ### Stop Mysql Cluster
 
-You can use the --tag option "stop_cluster" in ansible to safely stop the mysql cluster
+You can use the --tag option "stop_cluster" to safely stop the mysql cluster
 
 `ansible-playbook deploy-mysql-cluster.yml -i inventory.yml --tags "stop_cluster"`
 
 ### Start Mysql Clsuter
 
 
-You can use the --tag option "start_cluster" in ansible to safely start/bootstrap the mysql cluster
+You can use the --tag option "start_cluster" to safely start/bootstrap the mysql cluster
 
 `ansible-playbook deploy-mysql-cluster.yml -i inventory.yml --tags "start_cluster"`
 
@@ -80,5 +80,3 @@ You can use the --tag option "start_cluster" in ansible to safely start/bootstra
 ### To-DO List
 
 * Convert this playbook into an ansible role
-* Add tasks to verify/test cluster status 
-* add tasks to secure nodes
