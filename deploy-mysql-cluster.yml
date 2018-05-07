@@ -124,8 +124,9 @@
        dest: /etc/haproxy/haproxy.cfg
      when: "'load_balancer' in group_names"
 
+# Set mysql root user password and only allow access to root user from loadbalancer IP and localhost
 
-   - name: Set mysql root user password
+   - name: Set mysql root user password and only allow access to root user from loadbalancer IP and localhost
      mysql_user: 
       name: root
       host: '{{ item }}'
