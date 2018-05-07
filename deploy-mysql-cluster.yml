@@ -119,11 +119,18 @@
    - name: Set mysql root user password
      mysql_user: 
       name: root
-      host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
+      host: '{{ item }}'
       check_implicit_admin: yes
+      login_user: root
+      login_password: '{{ mysql_root_password }}'
       password: '{{ mysql_root_password }}'
       state: present
+      update_password: always
      when: inventory_hostname == groups['mysql_cluster'][0]
+     with_items:
+        - "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
+        - 127.0.0.1
+        - "localhost"
      tags:
         - install_haproxy
 
