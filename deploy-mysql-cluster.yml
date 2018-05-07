@@ -4,7 +4,7 @@
   become_method: sudo
   vars:
     mysql_cluster_name: demo_mysql_cluster
-    mysql_root_password: your_mysql_root_password
+    mysql_root_password: "your_mysql_root_password"
 
   tasks:
 
@@ -132,6 +132,7 @@
       name: haproxy
       host: "{{ hostvars[groups['load_balancer'][0]]['ansible_default_ipv4']['address'] }}"
       state: present
+      check_implicit_admin: yes
       login_user: root
       login_password: '{{ mysql_root_password }}'
      when: inventory_hostname == groups['mysql_cluster'][0]
