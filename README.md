@@ -25,15 +25,14 @@ add hosts to `inventory.yml`
 
 Note: Do not modify the host group names [mysql_cluster] and [load_balancer] when adding hosts to `inventory.yml` fil . 
 
-`
+```
 [mysql_cluster]
 mysql_node_1 ansible_host=192.168.10.2 ansible_port=22 ansible_user=ubuntu
 mysql_node_2 ansible_host=192.168.10.3 ansible_port=22 ansible_user=ubuntu
 mysql_node_3 ansible_host=192.168.10.4 ansible_port=22 ansible_user=ubuntu
 [load_balancer]
 haproxy_load_balancer ansible_host=192.168.10.5 ansible_port=22 ansible_user=ubuntu
-`
-
+```
 Before running the playbook you have to configure below variables inside the playbook : `deploy-mysql-cluster.yml`
 
 `mysql_cluster_name: demo_mysql_cluster`  <= name of your mysql cluster without spaces 
