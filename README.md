@@ -47,9 +47,23 @@ After successful completion of playbook, you can access the cluster by `mysql -h
 
 ### Verifying cluster status
 
-You can can verfiy the status of mysql cluster by running below query   
+check the last part of playbook output 
+
+```
+ok: [haproxy_load_balancer] => {
+    "msg": [
+        " Test connection successfull", 
+        " Total number of active mysql nodes in cluster: '3 '", 
+        " Setup Completed!"
+    ]
+}
+
+
+```
+
+You can also verfiy the status of mysql cluster by manually running below query   
 ~~~~sql
-mysql -u root -p your_password 
+`mysql -h load_balancer_IP -P 3306 -u root -p your_mysql_root_password`
 
 `mysql> SHOW STATUS LIKE 'wsrep_cluster_size';
 +--------------------+-------+
