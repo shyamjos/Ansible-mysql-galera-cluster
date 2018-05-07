@@ -98,6 +98,10 @@
      tags:
         - start_cluster
 
+   - name: Wait 10 seconds after bootstarping Primary Mysql Node
+     pause:
+      seconds: 25
+
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
      when: "('load_balancer' not in group_names) and  (inventory_hostname != groups['mysql_cluster'][0])"
