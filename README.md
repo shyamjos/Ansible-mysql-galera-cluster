@@ -5,7 +5,7 @@
 This playbook requires minimum 3 ubuntu 16.04 nodes for installing mysql 5.7 galera cluster and 1 ubuntu 16.04 node for installing HAproxy. cluster nodes and proxy node must be defined inside the included inventory.yml file.
 Note: Do not chnage the group names defined inside `inventory.yml` file
 
-
+![mysql galera cluster](https://i.imgur.com/YSR0Pnul.png )
 
 ### Running Playbook
 
@@ -24,7 +24,7 @@ After successful completion of playbook, you can access the cluster by `load_bal
 ### Verifying cluster status
 
 You can can verfiy the status of mysql cluster by running below query   
-
+~~~~sql
 mysql -u root -p your_password 
 
 `mysql> SHOW STATUS LIKE 'wsrep_cluster_size';
@@ -35,6 +35,7 @@ mysql -u root -p your_password
 +--------------------+-------+
 1 row in set (0.00 sec)`
 
+~~~~
 Which means we have 3 active nodes 
  
 
