@@ -40,12 +40,10 @@
       state: link
       force: yes
      when: "'mysql_cluster' in group_names"
-     tags:
    
    - name: Restart AppArmor
      systemd: state=restarted name=apparmor
      when: "'mysql_cluster' in group_names"
-     tags:
 
    - name: install Mysql-server 5.7 and Galera Cluster packages
      apt:
