@@ -39,11 +39,11 @@ Before running the playbook you have to configure below variables inside the pla
 
 `mysql_root_password: your_mysql_root_password` <= a strong password for mysql root user
 
-To run the playbook 
+#### To run the playbook 
 
 `ansible-playbook --fork=1 deploy-mysql-cluster.yml -i inventory.yml`
 
-Note: Here were using the ansible option `--fork=1` to disable parallel execution of tasks which helps in data consistency when stopping/bootstrapping cluster 
+###### Note: Here were using the ansible option `--fork=1` to disable parallel execution of tasks which helps in data consistency when stopping/bootstrapping cluster 
 
 After successful completion of playbook, you can access the cluster by `mysql -h load_balancer_IP -P 3306 -u root -p your_mysql_root_password`
 
