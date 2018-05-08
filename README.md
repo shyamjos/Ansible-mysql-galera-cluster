@@ -41,7 +41,9 @@ Before running the playbook you have to configure below variables inside the pla
 
 To run the playbook 
 
-`ansible-playbook deploy-mysql-cluster.yml -i inventory.yml`
+`ansible-playbook --fork=1 deploy-mysql-cluster.yml -i inventory.yml`
+
+Note: Here were using the ansible option `--fork=1` to disable parallel execution of tasks which helps in data consistency when stopping/bootstrapping cluster 
 
 After successful completion of playbook, you can access the cluster by `mysql -h load_balancer_IP -P 3306 -u root -p your_mysql_root_password`
 
@@ -81,14 +83,14 @@ Which means we have 3 active nodes
 
 You can use the --tag option "stop_cluster" to safely stop the mysql cluster
 
-`ansible-playbook deploy-mysql-cluster.yml -i inventory.yml --tags "stop_cluster"`
+`ansible-playbook --fork=1 deploy-mysql-cluster.yml -i inventory.yml --tags "stop_cluster"`
 
 ### Start Mysql Clsuter
 
 
 You can use the --tag option "start_cluster" to safely start/bootstrap the mysql cluster
 
-`ansible-playbook deploy-mysql-cluster.yml -i inventory.yml --tags "start_cluster"`
+`ansible-playbook --fork=1 deploy-mysql-cluster.yml -i inventory.yml --tags "start_cluster"`
 
 
 ### To-DO List
