@@ -95,6 +95,7 @@
    - name: Bootstarping Primary Mysql Node
      shell: /usr/bin/mysqld_bootstrap
      when: inventory_hostname == groups['mysql_cluster'][0]
+     any_errors_fatal: true
      tags:
         - start_cluster
 
@@ -105,6 +106,7 @@
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
      when: "('load_balancer' not in group_names) and  (inventory_hostname != groups['mysql_cluster'][0])"
+     any_errors_fatal: true
      tags:
         - start_cluster 
      
