@@ -1,8 +1,6 @@
 [mysql_cluster]
-mysql_node_1 ansible_host=192.168.10.2 ansible_port=22 
-mysql_node_2 ansible_host=192.168.10.3 ansible_port=22 
-mysql_node_3 ansible_host=192.168.10.4 ansible_port=22 
+mysql_node_1 ansible_host=192.168.10.2 ansible_port=22
+mysql_node_2 ansible_host=192.168.10.3 ansible_port=22
+mysql_node_3 ansible_host=192.168.10.4 ansible_port=22
 [load_balancer]
-haproxy_load_balancer ansible_host=192.168.10.5 ansible_port=22 
-#ansible_user=mobme
-
+haproxy_load_balancer ansible_host=192.168.10.5 ansible_port=22
