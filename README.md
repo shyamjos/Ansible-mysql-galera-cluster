@@ -43,7 +43,7 @@ Before running the playbook you have to configure below variables inside the pla
 
 `ansible-playbook --fork=1 deploy-mysql-cluster.yml -i inventory.yml`
 
-###### Note: Here were using the ansible option `--fork=1` to disable parallel execution of tasks which helps in data consistency when stopping/bootstrapping cluster 
+##### Note: The ansible option `--fork=1` is used to disable parallel execution of tasks, which helps in data consistency when stopping/bootstrapping the cluster. 
 
 After successful completion of playbook, you can access the cluster by `mysql -h load_balancer_IP -P 3306 -u root -p your_mysql_root_password`
 
