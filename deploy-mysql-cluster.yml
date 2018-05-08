@@ -77,9 +77,11 @@
      tags:
         - stop_cluster
 
-   - name: Wait 25 seconds to safely shutdown all slave mysql nodes
+   - name: Wait 20 seconds to safely shutdown all slave mysql nodes
      pause:
-      seconds: 25
+      seconds: 20
+     tags:
+        - stop_cluster
 
    - name: Stop Primary Mysql Node
      systemd: state=stopped name=mysql
@@ -89,8 +91,7 @@
 
    - name: Wait 10 seconds to safely shutdown mysql primary node
      pause:
-      seconds: 25
-
+      seconds: 10
 
    - name: Bootstarping Primary Mysql Node
      shell: /usr/bin/mysqld_bootstrap
@@ -101,7 +102,9 @@
 
    - name: Wait 10 seconds after bootstarping Primary Mysql Node
      pause:
-      seconds: 25
+      seconds: 10
+     tags:
+        - start_cluster
 
    - name: Start slave Mysql nodes
      systemd: state=started name=mysql
@@ -166,6 +169,7 @@
      run_once: true
      register: cluster_status
 
+
    - name: Test status
      debug: 
          msg: 
@@ -173,4 +177,4 @@
             - " Total number of active mysql nodes in cluster: '{{ cluster_status.stdout }} '"
             - " Setup Completed!"
      when: inventory_hostname == groups['load_balancer'][0] 
-     run_once: true
+     run_once: true 
