@@ -20,8 +20,6 @@ global
 
 defaults
 	log	global
-	mode	http
-	option	httplog
 	option	dontlognull
         timeout connect 5000
         timeout client  50000
@@ -38,7 +36,7 @@ defaults
 # Load Balancing for Mysql Galera Cluster
 listen mysql_galera_cluster 
 bind {{ ansible_default_ipv4.address }}:3306
-     balance source
+     balance roundrobin
      mode tcp
      option tcpka
      option mysql-check user haproxy
